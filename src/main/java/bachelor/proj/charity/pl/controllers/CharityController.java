@@ -13,6 +13,9 @@ import bachelor.proj.charity.shared.enums.CharityStatus;
 import bachelor.proj.charity.shared.enums.sort.CharitySortedBy;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,6 +41,10 @@ public class CharityController {
     private final FundService fundService;
 
     private final JWTokenProvider tokenProvider;
+
+    @Autowired
+    @Qualifier("userCacheManager")
+    private CacheManager cacheManager;
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/fund")
@@ -190,9 +197,14 @@ public class CharityController {
                                             HttpServletRequest request) {
 
         final Long authenticatedUserId = tokenProvider.getUserId(request);
+        boolean result = charityService.upvoteForCharity(charityId, authenticatedUserId);
+
+        if (result) {
+            evictCache(request.getUserPrincipal().getName());
+        }
 
         return ResponseEntity.ok(
-                Map.of("accepted", charityService.upvoteForCharity(charityId, authenticatedUserId))
+                Map.of("accepted", result)
         );
     }
 
@@ -242,5 +254,9 @@ public class CharityController {
         else
             sortedBy = CharitySortedBy.values()[0];
         return sortedBy;
+    }
+
+    private void evictCache(String email) {
+        cacheManager.getCache("user-details_cache").evictIfPresent(email);
     }
 }
