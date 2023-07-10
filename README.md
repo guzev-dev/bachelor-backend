@@ -22,9 +22,9 @@ Tech stack:
 Цей проєкт є серверною частиною моєї дипломної роботи для отримання ступеня бакалавра. 
 Він являє собою REST API для вебсайту гуманітарної допомоги.
 
-### [Клієнтська частина кваліфікаційної роботи](https://github.com/guzev-dev/bachelor-frontend)
+### [Клієнтська частина](https://github.com/guzev-dev/bachelor-frontend)
 
-Tech stack:
+Технологічний стек:
 
 * Java 17
 * Spring (Boot, Security, Data JPA)
@@ -40,6 +40,6 @@ Tech stack:
 
 for correct work of smtp server you should define environmental variables:
 * ***SPRING_MAIL_HOST*** - host of smtp server (*smtp.gmail.com* for Gmail);
-* ***SPRING_MAIL_PORT*** - host port (Gmail: 465 for SSL, 587 for TLS/STARTTLS);
+* ***SPRING_MAIL_PORT*** - host port (Gmail: 465 for SSL, 587 for TLS/STARTTLS);Т
 * ***SPRING_MAIL_USERNAME*** - email address in format *example@gmail.com*;
 * ***SPRING_MAIL_PASSWORD*** - email account password (use application password for Gmail).
